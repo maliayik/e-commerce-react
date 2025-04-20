@@ -44,6 +44,48 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Telefon Açıklaması",
+                            ImageUrl = "1.jps",
+                            IsActive = true,
+                            Name = "Apple",
+                            Price = 1000m,
+                            Stock = 47
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Telefon Açıklaması",
+                            ImageUrl = "1.jps",
+                            IsActive = true,
+                            Name = "Samsung",
+                            Price = 900m,
+                            Stock = 50
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Telefon Açıklaması",
+                            ImageUrl = "1.jps",
+                            IsActive = true,
+                            Name = "Nokia",
+                            Price = 500m,
+                            Stock = 100
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Telefon Açıklaması",
+                            ImageUrl = "1.jps",
+                            IsActive = true,
+                            Name = "Huawei",
+                            Price = 320m,
+                            Stock = 120
+                        });
                 });
 #pragma warning restore 612, 618
         }
