@@ -1,5 +1,4 @@
 using API.Data;
-using API.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,14 +18,11 @@ public class ProductsController(DataContext dataContext) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProductById(int? id)
     {
-        if(id == null) return NotFound();
+        if (id == null) return NotFound();
         var products = await dataContext.Products.ToListAsync();
 
-        if (!products.Any(x => x.Id == id))
-        {
-            return NotFound();
-        }
-        
+        if (!products.Any(x => x.Id == id)) return NotFound();
+
         var product = await dataContext.Products.FindAsync(id);
         return Ok(product);
     }
