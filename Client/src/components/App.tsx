@@ -8,17 +8,7 @@ function App() {
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
-    function addProduct() {
-        setProducts([...products, {
-            id: 4,
-            name: "product 4",
-            price: 3000,
-            isActive: true,
-            description: "asdasd",
-            stock: 10
-        }])
-    }
-
+  
     //API'dan gelen product datasını setProducts aracılığıyla products list içerisine eklemiş oluruz
     //useEffect kullanarak component ilk yüklendiğinde sayfa render edilmiş olur.
     useEffect(() => {
@@ -31,7 +21,7 @@ function App() {
             <CssBaseline></CssBaseline>
             <Header></Header>
             <Container>
-                <ProductList products={products} addProduct={addProduct}></ProductList>
+                <ProductList products={products}></ProductList>
             </Container>
         </>
 

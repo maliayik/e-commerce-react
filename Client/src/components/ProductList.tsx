@@ -1,23 +1,24 @@
 import Product from "./Product.tsx";
 import {IProduct} from "../../model/IProduct.ts";
+import {Grid} from "@mui/material";
 
 interface Props {
     products: IProduct[];
-    addProduct: () => void;
 
 }
 
-export default function ProductList(props: Props) {
+export default function ProductList({products}: Props) {
 
 
     return (
-        <div>
-            <h2>ProductList</h2>
-            {props.products.map((p: any) => (
-                p.isActive && <Product key={p.id} product={p}/>
+        <Grid container spacing={2}>
+
+            {products.map((p: any) => (
+                <Grid key={p.id} size={{xs: 6, md: 4, lg: 3}}>
+                    <Product key={p.id} product={p}/>
+                </Grid>
             ))}
-            <button onClick={props.addProduct}>Add Product</button>
-        </div>
+        </Grid>
 
     );
 
