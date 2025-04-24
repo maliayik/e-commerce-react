@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Header from "./Header.tsx";
 import ProductList from "./ProductList.tsx";
 import {IProduct} from "../../model/IProduct.ts";
+import {Container, CssBaseline} from "@mui/material";
 
 function App() {
 
@@ -27,11 +28,15 @@ function App() {
     }, []);
     return (
         <>
-            <Header products={products}></Header>
-            <ProductList products={products} addProduct={addProduct}></ProductList>
+            <CssBaseline></CssBaseline>
+            <Header></Header>
+            <Container>
+                <ProductList products={products} addProduct={addProduct}></ProductList>
+            </Container>
         </>
 
     )
+
 }
 
 
