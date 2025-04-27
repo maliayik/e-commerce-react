@@ -1,7 +1,8 @@
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import {Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
-import {IProduct} from "../../model/IProduct.ts";
+import {IProduct} from "../../../model/IProduct.ts";
+
 
 interface Props {
     product: IProduct

@@ -1,5 +1,5 @@
 import Product from "./Product.tsx";
-import {IProduct} from "../../model/IProduct.ts";
+import {IProduct} from "../../../model/IProduct.ts";
 import {Grid} from "@mui/material";
 
 interface Props {
