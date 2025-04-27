@@ -2,6 +2,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import {Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 import {IProduct} from "../../../model/IProduct.ts";
+import {Link} from 'react-router';
 
 
 interface Props {
@@ -25,7 +26,9 @@ export default function Product({product}: Props) {
             <CardActions>
                 <Button variant="outlined" size="small" startIcon={<ShoppingCartIcon/>} color={"success"}>Add to
                     Card</Button>
-                <Button variant="outlined" size="small" startIcon={<SearchIcon/>} color={"primary"}>View</Button>
+                <Button component={Link} to={`/catalog/${product.id}`} variant="outlined" size="small"
+                        startIcon={<SearchIcon/>}
+                        color={"primary"}>View</Button>
 
             </CardActions>
         </Card>
