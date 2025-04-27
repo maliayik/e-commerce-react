@@ -12,16 +12,16 @@ import {
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {IProduct} from "../../../model/IProduct.ts";
+import requests from "../../api/requests.ts";
 
 export default function ProductDetailsPage() {
 
-    const {id} = useParams();
+    const {id} = useParams<{ id: string }>();
     const [product, setProduct] = useState<IProduct | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5257/api/products/${id}`)
-            .then(response => response.json())
+      id && requests.catalog.details(parseInt(id))           
             .then(data => setProduct(data))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
