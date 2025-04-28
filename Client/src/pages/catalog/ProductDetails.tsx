@@ -23,7 +23,7 @@ export default function ProductDetailsPage() {
     useEffect(() => {
       id && requests.catalog.details(parseInt(id))           
             .then(data => setProduct(data))
-            .catch(error => console.log(error))
+          .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }, [id]);
 
