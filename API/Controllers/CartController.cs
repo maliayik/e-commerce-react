@@ -1,6 +1,6 @@
 using API.Data;
+using API.DTOs;
 using API.Entity;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +11,9 @@ namespace API.Controllers;
 public class CartController(DataContext context) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<Cart>> GetCart()
+    public async Task<ActionResult<CartDto>> GetCart()
     {
-        var cart = await GetOrCreate();
-        return Ok(cart);
+        return CartToDto(await GetOrCreate());
     }
 
     [HttpPost]
@@ -34,7 +33,7 @@ public class CartController(DataContext context) : ControllerBase
 
         var result = await context.SaveChangesAsync() > 0;
 
-        if (result) return CreatedAtAction(nameof(GetCart), cart);
+        if (result) return CreatedAtAction(nameof(GetCart), CartToDto(cart));
 
         return BadRequest(new ProblemDetails { Title = "The Product can not be added to cart" });
     }
@@ -73,5 +72,22 @@ public class CartController(DataContext context) : ControllerBase
         }
 
         return cart;
+    }
+
+    private CartDto CartToDto(Cart cart)
+    {
+        return new CartDto
+        {
+            Id = cart.Id,
+            CustomerId = cart.CustomerId,
+            CartItems = cart.CartItems.Select(item => new CartItemDto
+            {
+                ProductId = item.Product.Id,
+                Name = item.Product.Name,
+                Quantity = item.Quantity,
+                Price = item.Product.Price,
+                ImageUrl = item.Product.ImageUrl
+            }).ToList()
+        };
     }
 }
