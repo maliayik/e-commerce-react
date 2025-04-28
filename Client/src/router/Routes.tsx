@@ -6,6 +6,7 @@ import ContactPage from "../pages/ContactPage.tsx";
 import CatalogPage from "../pages/catalog/CatalogPage.tsx";
 import ProductDetailsPage from "../pages/catalog/ProductDetails.tsx";
 import ErrorPage from "../pages/catalog/ErrorPage.tsx";
+import ServerError from "../errors/ServerError.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
             {path: "contact", element: <ContactPage></ContactPage>},
             {path: "catalog", element: <CatalogPage></CatalogPage>},
             {path: "error", element: <ErrorPage></ErrorPage>},
+            {path: "server-error", element: <ServerError></ServerError>},
             {path: "catalog/:id", element: <ProductDetailsPage></ProductDetailsPage>}
         ]
     }

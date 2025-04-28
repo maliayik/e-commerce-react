@@ -6,7 +6,8 @@ const links = [
     {title: "Home", to: "/"},
     {title: "Catalog", to: "/catalog"},
     {title: "About", to: "/about"},
-    {title: "Contact", to: "/contact"}
+    {title: "Contact", to: "/contact"},
+    {title: "Error", to: "/error"}
 ]
 const navStyles = {
     color: "inherit",

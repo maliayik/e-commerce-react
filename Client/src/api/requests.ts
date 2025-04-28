@@ -1,5 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import {toast} from "react-toastify";
+import {router} from '../router/Routes';
 
 axios.defaults.baseURL = 'http://localhost:5257/api/';
 
@@ -18,7 +19,7 @@ axios.interceptors.response.use(response => {
             toast.error(data.title);
             break;
         case 500:
-            toast.error(data.title);
+            router.navigate("/server-error", {state: {error: data, status: status}});
             break;
         default:
             break;
@@ -35,12 +36,12 @@ const queries = {
     delete: (url: string) => axios.delete(url).then((response: AxiosResponse) => response.data),
 }
 
-const Errors={
-    get400Error:()=> queries.get("/error/bad-request"),
-    get401Error:()=> queries.get("/error/unauthorized"),
-    get404Error:()=> queries.get("/error/not-found"),
-    get500Error:()=> queries.get("/error/server-error"),
-    getValidationError:()=> queries.get("/error/validation-error"),
+const Errors = {
+    get400Error: () => queries.get("/error/bad-request"),
+    get401Error: () => queries.get("/error/unauthorized"),
+    get404Error: () => queries.get("/error/not-found"),
+    get500Error: () => queries.get("/error/server-error"),
+    getValidationError: () => queries.get("/error/validation-error"),
 }
 
 const Catalog = {
@@ -49,7 +50,7 @@ const Catalog = {
 }
 
 const requests = {
-    Catalog,Errors
+    Catalog, Errors
 }
 
 export default requests;
