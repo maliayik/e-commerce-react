@@ -10,6 +10,13 @@ axios.interceptors.response.use(response => {
     const {data, status} = error.response as AxiosResponse;
     switch (status) {
         case 400:
+            if (data.errors) {
+                const modelErrors: string [] = [];
+                for (const key in data.errors) {
+                    modelErrors.push(data.errors[key]);
+                }
+                throw modelErrors;
+            }
             toast.error(data.title);
             break;
         case 401:
