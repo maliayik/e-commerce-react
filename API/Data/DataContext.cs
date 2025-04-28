@@ -6,6 +6,7 @@ namespace API.Data;
 public class DataContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Product> Products { get; set; }
+    public DbSet<Cart> Carts => Set<Cart>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
