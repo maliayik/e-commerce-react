@@ -30,10 +30,8 @@ public class Cart
 
         item.Quantity -= quantity;
 
-        if (item.Quantity == 0)
-        {
-            CartItems.Remove(item);
-        }
+        if (item.Quantity <= 0) CartItems.Remove(item);
+        
     }
 }
 

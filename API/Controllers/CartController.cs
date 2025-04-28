@@ -1,5 +1,6 @@
 using API.Data;
 using API.Entity;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,20 @@ public class CartController(DataContext context) : ControllerBase
 
         return BadRequest(new ProblemDetails { Title = "The Product can not be added to cart" });
     }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteItemFromCart(int productId, int quantity)
+    {
+        var cart = await GetOrCreate();
+
+        cart.RemoveItem(productId, quantity);
+
+        var result = await context.SaveChangesAsync() > 0;
+        if (result) return Ok();
+
+        return BadRequest(new ProblemDetails { Title = "The Product can not be deleted from cart" });
+    }
+
 
     private async Task<Cart> GetOrCreate()
     {
