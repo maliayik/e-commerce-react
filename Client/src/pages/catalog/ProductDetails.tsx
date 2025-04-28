@@ -13,6 +13,7 @@ import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {IProduct} from "../../../model/IProduct.ts";
 import requests from "../../api/requests.ts";
+import NotFound from "../../errors/NotFound.tsx";
 
 export default function ProductDetailsPage() {
 
@@ -21,14 +22,14 @@ export default function ProductDetailsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      id && requests.Catalog.details(parseInt(id))           
+        id && requests.Catalog.details(parseInt(id))
             .then(data => setProduct(data))
-          .catch(error => console.log(error))
+            .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }, [id]);
 
     if (loading) return <CircularProgress/>
-    if (!product) return <h5> Product not found!</h5>
+    if (!product) return <NotFound></NotFound>
 
 
     return (

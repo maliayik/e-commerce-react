@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router";
+import {createBrowserRouter, Navigate} from "react-router";
 import App from "../components/App.tsx";
 import HomePage from "../pages/HomePage.tsx";
 import AboutPage from "../pages/AboutPage.tsx";
@@ -7,6 +7,7 @@ import CatalogPage from "../pages/catalog/CatalogPage.tsx";
 import ProductDetailsPage from "../pages/catalog/ProductDetails.tsx";
 import ErrorPage from "../pages/catalog/ErrorPage.tsx";
 import ServerError from "../errors/ServerError.tsx";
+import NotFound from "../errors/NotFound.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -17,9 +18,11 @@ export const router = createBrowserRouter([
             {path: "about", element: <AboutPage></AboutPage>},
             {path: "contact", element: <ContactPage></ContactPage>},
             {path: "catalog", element: <CatalogPage></CatalogPage>},
+            {path: "catalog/:id", element: <ProductDetailsPage></ProductDetailsPage>},
             {path: "error", element: <ErrorPage></ErrorPage>},
             {path: "server-error", element: <ServerError></ServerError>},
-            {path: "catalog/:id", element: <ProductDetailsPage></ProductDetailsPage>}
+            {path: "not-found", element: <NotFound></NotFound>},
+            {path: "*", element: <Navigate to={"/not-found"}/>},
         ]
     }
 ])

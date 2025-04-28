@@ -9,7 +9,7 @@ export default function CatalogPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        requests.catalog.list()
+        requests.Catalog.list()
             .then(data => setProducts(data))
             .finally(() => setLoading(false));
     }, []);
