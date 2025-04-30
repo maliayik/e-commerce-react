@@ -1,8 +1,11 @@
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import {Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 import {IProduct} from "../../../model/IProduct.ts";
 import {Link} from 'react-router';
+import requests from "../../api/requests.ts";
+import {useState} from "react";
+import {LoadingButton} from "@mui/lab";
+import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
 
 
 interface Props {
@@ -10,6 +13,18 @@ interface Props {
 }
 
 export default function Product({product}: Props) {
+
+    const [loading, setLoading] = useState(false);
+
+    function handleAddItem(productId: number) {
+        setLoading(true);
+        requests.Cart.addItem(productId)
+            .then(cart => console.log(cart))
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false));
+
+    }
+
     return (
 
         <Card>
@@ -24,11 +39,16 @@ export default function Product({product}: Props) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="outlined" size="small" startIcon={<ShoppingCartIcon/>} color={"success"}>Add to
-                    Card</Button>
+                <LoadingButton startIcon={<AddShoppingCart/>}
+                               size={"small"}
+                               variant="outlined"
+                               loadingPosition={"start"}
+                               loading={loading}
+                               onClick={() => handleAddItem(product.id)}> Sepete Ekle </LoadingButton>
+
                 <Button component={Link} to={`/catalog/${product.id}`} variant="outlined" size="small"
                         startIcon={<SearchIcon/>}
-                        color={"primary"}>View</Button>
+                        color={"primary"}>Görüntüle</Button>
 
             </CardActions>
         </Card>
