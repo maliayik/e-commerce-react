@@ -46,7 +46,7 @@ public class CartController(DataContext context) : ControllerBase
         cart.RemoveItem(productId, quantity);
 
         var result = await context.SaveChangesAsync() > 0;
-        if (result) return Ok();
+        if (result) return CreatedAtAction(nameof(GetCart), CartToDto(cart));
 
         return BadRequest(new ProblemDetails { Title = "The Product can not be deleted from cart" });
     }

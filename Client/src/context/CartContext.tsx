@@ -3,8 +3,7 @@ import {Cart} from "../../model/ICart.ts";
 
 interface ICartContextValue {
     cart: Cart | null;
-    setCart: (cart: Cart) => void;
-    deleteItem: (productId: number, quantity: number) => void;
+    setCart: (cart: Cart) => void;  
 }
 
 export const CartContext = createContext<ICartContextValue | undefined>(undefined);
@@ -23,13 +22,10 @@ export function useCartContext() {
 export function CartcontextProvider({children}: PropsWithChildren<any>) {
     const [cart, setCart] = useState<Cart | null>(null);
 
-    function deleteItem(productId: number, quantity: number) {
-        return productId === quantity;
-
-    }
+    
 
     return (
-        <CartContext.Provider value={{cart, setCart, deleteItem}}>
+        <CartContext.Provider value={{cart, setCart}}>
             {children}
         </CartContext.Provider>
     );
