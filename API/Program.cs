@@ -16,7 +16,17 @@ builder.Services.AddDbContext<DataContext>(opt =>
     var connectionString = config.GetConnectionString("defaultConnection");
     opt.UseSqlite(connectionString);
 });
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3001", policy =>
+    {
+        policy.WithOrigins("http://localhost:3001")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -31,7 +41,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.UseCors(opt => { opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000"); });
+
+app.UseCors("AllowLocalhost3001");
 
 app.UseAuthorization();
 

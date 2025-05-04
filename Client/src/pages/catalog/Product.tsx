@@ -6,6 +6,7 @@ import requests from "../../api/requests.ts";
 import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
+import {useCartContext} from "../../context/CartContext.tsx";
 
 
 interface Props {
@@ -15,11 +16,12 @@ interface Props {
 export default function Product({product}: Props) {
 
     const [loading, setLoading] = useState(false);
+    const {setCart} = useCartContext();
 
     function handleAddItem(productId: number) {
         setLoading(true);
         requests.Cart.addItem(productId)
-            .then(cart => console.log(cart))
+            .then(cart => setCart(cart))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
 
