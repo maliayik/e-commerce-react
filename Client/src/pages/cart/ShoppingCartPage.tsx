@@ -9,18 +9,19 @@ import {LoadingButton} from "@mui/lab";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 import requests from "../../api/requests.ts";
+import {toast} from "react-toastify";
 
 export default function ShoppingCartPage() {
 
     const {cart, setCart} = useCartContext();
     const [status, setStatus] = useState({loading: false, id: ""});
 
-    function handleAddItem(productId: number, id: string) {
+    function handleAddItem(productId: number, id: string) {        
         setStatus({loading: true, id});
         requests.Cart.addItem(productId)
             .then(cart => setCart(cart))
             .catch(err => console.log(err))
-            .finally(() => setStatus({loading: true, id}));
+            .finally(() => setStatus({loading: false, id}));
     }
 
     function handleDeleteItem(productId: number, id: string, quantity = 1) {
@@ -28,7 +29,7 @@ export default function ShoppingCartPage() {
         requests.Cart.deleteItem(productId, quantity)
             .then((cart) => setCart(cart))
             .catch(err => console.log(err))
-            .finally(() => setStatus({loading: true, id}));
+            .finally(() => setStatus({loading: false, id}));
     }
 
     if (cart?.cartItems.length === 0) return <Alert severity={"warning"}>Sepetinizde Ürün yok</Alert>;
@@ -76,7 +77,10 @@ export default function ShoppingCartPage() {
                             <TableCell align="right">
                                 <LoadingButton color={"error"}
                                                loading={status.loading && status.id === "dell_all" + item.productId}
-                                               onClick={() => handleDeleteItem(item.productId, "del_all" + item.productId, item.quantity)}>
+                                               onClick={() => {
+                                                   handleDeleteItem(item.productId, "del_all" + item.productId, item.quantity);
+                                                   toast.error("ürün sepetinizden silindi");
+                                               }}>
                                     <Delete/>
                                 </LoadingButton>
                             </TableCell>

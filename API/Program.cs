@@ -18,9 +18,9 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3001", policy =>
+    options.AddPolicy("AllowLocalhost3000", policy =>
     {
-        policy.WithOrigins("http://localhost:3001")
+        policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -42,7 +42,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseCors("AllowLocalhost3001");
+app.UseCors("AllowLocalhost3000");
 
 app.UseAuthorization();
 

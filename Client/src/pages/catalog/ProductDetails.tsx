@@ -1,7 +1,7 @@
 import {
     CircularProgress,
     Divider,
-    Grid,
+    Grid, Stack,
     Table,
     TableBody,
     TableCell,
@@ -14,19 +14,37 @@ import {useEffect, useState} from "react";
 import {IProduct} from "../../../model/IProduct.ts";
 import requests from "../../api/requests.ts";
 import NotFound from "../../errors/NotFound.tsx";
+import {LoadingButton} from "@mui/lab";
+import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
+import {useCartContext} from "../../context/CartContext.tsx";
+import {toast} from "react-toastify";
 
 export default function ProductDetailsPage() {
-
+    const {cart, setCart} = useCartContext();
     const {id} = useParams<{ id: string }>();
     const [product, setProduct] = useState<IProduct | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isAdded, setIsAdded] = useState(false);
 
+    const item = cart?.cartItems.find(i => i.productId == product?.id);
     useEffect(() => {
         id && requests.Catalog.details(parseInt(id))
             .then(data => setProduct(data))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }, [id]);
+
+    function handleAddItem(id: number) {
+        setIsAdded(true);
+
+        requests.Cart.addItem(id)
+            .then(cart => {
+                setCart(cart);
+                toast.success("Sepetinize eklendi");
+            })
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false));
+    }
 
     if (loading) return <CircularProgress/>
     if (!product) return <NotFound></NotFound>
@@ -59,6 +77,19 @@ export default function ProductDetailsPage() {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Stack direction={"row"} spacing={2} sx={{mt: 3}}>
+                    <LoadingButton variant={"outlined"} loadingPosition={"start"} startIcon={<AddShoppingCart/>}
+                                   loading={isAdded}
+                                   onClick={() => handleAddItem(product.id)}>
+                        Sepete Ekle
+
+                    </LoadingButton>
+                    {
+                        item?.quantity! > 0 && (
+                            <Typography variant={"body2"}>Sepetinize {item?.quantity} adet eklendi</Typography>
+                        )
+                    }
+                </Stack>
             </Grid>
         </Grid>
 
