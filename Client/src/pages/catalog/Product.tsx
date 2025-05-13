@@ -8,6 +8,7 @@ import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
 import {useCartContext} from "../../context/CartContext.tsx";
 import {toast} from "react-toastify";
+import {currencyTry} from "../../utils/formatCurrency.ts";
 
 
 interface Props {
@@ -41,7 +42,7 @@ export default function Product({product}: Props) {
                     {product.name}
                 </Typography>
                 <Typography variant="body2" color="secondary">
-                    {(product.price / 100).toFixed(2)}₺
+                    {currencyTry.format(product.price)}₺
                 </Typography>
             </CardContent>
             <CardActions>

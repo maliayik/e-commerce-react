@@ -18,6 +18,7 @@ import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
 import {useCartContext} from "../../context/CartContext.tsx";
 import {toast} from "react-toastify";
+import {currencyTry} from "../../utils/formatCurrency.ts";
 
 export default function ProductDetailsPage() {
     const {cart, setCart} = useCartContext();
@@ -43,7 +44,7 @@ export default function ProductDetailsPage() {
                 toast.success("Sepetinize eklendi");
             })
             .catch(error => console.log(error))
-            .finally(() => setLoading(false));
+            .finally(() => setIsAdded(false));
     }
 
     if (loading) return <CircularProgress/>
@@ -58,7 +59,7 @@ export default function ProductDetailsPage() {
             <Grid size={{xl: 9, lg: 8, md: 7, sm: 6, xs: 12}}>
                 <Typography variant="h3"> {product.name} </Typography>
                 <Divider sx={{mb: 2}}></Divider>
-                <Typography variant={"h4"} color={"secondary"}>{(product.price / 100).toFixed(2)} ₺</Typography>
+                <Typography variant={"h4"} color={"secondary"}>{currencyTry.format(product.price)} ₺</Typography>
                 <TableContainer>
                     <Table>
                         <TableBody>
