@@ -2,14 +2,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import {Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 import {IProduct} from "../../../model/IProduct.ts";
 import {Link} from 'react-router';
-import requests from "../../api/requests.ts";
-import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
-import {toast} from "react-toastify";
 import {currencyTry} from "../../utils/formatCurrency.ts";
-import {useAppDispatch} from '../../hooks/hooks.ts';
-import {setCart} from '../cart/cartSlice.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {addItemToCart} from '../cart/cartSlice.ts';
 
 
 interface Props {
@@ -18,20 +15,8 @@ interface Props {
 
 export default function Product({product}: Props) {
 
-    const [loading, setLoading] = useState(false);
+    const {status} = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
-
-    function handleAddItem(productId: number) {
-        setLoading(true);
-        requests.Cart.addItem(productId)
-            .then(cart => {
-                dispatch(setCart(cart));
-                toast.success("Sepetinize eklendi");
-            })
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
-
-    }
 
     return (
 
@@ -51,8 +36,9 @@ export default function Product({product}: Props) {
                                size={"small"}
                                variant="outlined"
                                loadingPosition={"start"}
-                               loading={loading}
-                               onClick={() => handleAddItem(product.id)}> Sepete Ekle </LoadingButton>
+                               loading={status === "pendingAddItem" + product.id}
+                               onClick={() => dispatch(addItemToCart({productId: product.id}))}> Sepete
+                    Ekle </LoadingButton>
 
                 <Button component={Link} to={`/catalog/${product.id}`} variant="outlined" size="small"
                         startIcon={<SearchIcon/>}
