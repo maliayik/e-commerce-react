@@ -3,18 +3,19 @@ import {CircularProgress, Container, CssBaseline} from "@mui/material";
 import {Outlet} from "react-router";
 import {ToastContainer} from "react-toastify";
 import {useEffect, useState} from "react";
-import {useCartContext} from "../context/CartContext.tsx";
 import requests from "../api/requests.ts";
+import {useAppDispatch} from "../hooks/hooks.ts";
+import { setCart } from "../pages/cart/cartSlice.ts";
 
 function App() {
 
-    const {setCart} = useCartContext();
+    const dispatch=useAppDispatch();
     const [loading, setLoading] = useState(true);
     
     //Bir önceki cart bilgilerini almak için App.tsx dosyamıza useEffect ekliyoruz.
     useEffect(() => {
         requests.Cart.get()
-            .then(cart => setCart(cart))
+            .then(cart => dispatch(setCart(cart)))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
 

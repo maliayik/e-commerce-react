@@ -1,10 +1,10 @@
 import TableRow from "@mui/material/TableRow";
 import {TableCell} from "@mui/material";
-import {useCartContext} from "../../context/CartContext.tsx";
 import {currencyTry} from "../../utils/formatCurrency.ts";
+import {useAppSelector} from "../../hooks/hooks.ts";
 
 export default function CartSummary() {
-    const {cart} = useCartContext();
+    const {cart} = useAppSelector(state => state.cart);
     const subTotal = cart?.cartItems.reduce((toplam, item) => toplam + (item.quantity * item.price), 0) ?? 0;
     const tax = subTotal * 0.2;
     const total = subTotal + tax;

@@ -3,7 +3,6 @@ import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
 import {Alert, Paper, TableCell, TableHead, TableRow} from "@mui/material";
 import Delete from "@mui/icons-material/Delete";
-import {useCartContext} from "../../context/CartContext.tsx";
 import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
@@ -12,16 +11,19 @@ import requests from "../../api/requests.ts";
 import {toast} from "react-toastify";
 import CartSummary from "./CartSummary.tsx";
 import {currencyTry} from "../../utils/formatCurrency.ts";
+import {setCart} from "./cartSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
 
 export default function ShoppingCartPage() {
 
-    const {cart, setCart} = useCartContext();
+    const {cart} = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch();
     const [status, setStatus] = useState({loading: false, id: ""});
 
     function handleAddItem(productId: number, id: string) {
         setStatus({loading: true, id});
         requests.Cart.addItem(productId)
-            .then(cart => setCart(cart))
+            .then(cart => dispatch(setCart(cart)))
             .catch(err => console.log(err))
             .finally(() => setStatus({loading: false, id}));
     }
@@ -29,7 +31,7 @@ export default function ShoppingCartPage() {
     function handleDeleteItem(productId: number, id: string, quantity = 1) {
         setStatus({loading: true, id});
         requests.Cart.deleteItem(productId, quantity)
-            .then((cart) => setCart(cart))
+            .then((cart) => dispatch(setCart(cart)))
             .catch(err => console.log(err))
             .finally(() => setStatus({loading: false, id}));
     }
