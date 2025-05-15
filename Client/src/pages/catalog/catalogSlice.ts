@@ -1,6 +1,7 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {IProduct} from "../../../model/IProduct.ts";
 import requests from "../../api/requests.ts";
+import {RootState} from "../../store/store.ts";
 
 export const fetchProducts = createAsyncThunk<IProduct[]>(
     "catalog/fetchProducts",
@@ -19,7 +20,8 @@ export const fetchProductById = createAsyncThunk<IProduct, number>(
 
 const productsAdapter = createEntityAdapter<IProduct>();
 const initialState = productsAdapter.getInitialState({
-    status: "idle"
+    status: "idle",
+    isLoaded: false
 });
 export const catalogSlice = createSlice({
     name: "catalog",
@@ -31,6 +33,7 @@ export const catalogSlice = createSlice({
         });
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             productsAdapter.setAll(state, action.payload);
+            state.isLoaded = true;
             state.status = "idle";
         });
         builder.addCase(fetchProducts.rejected, (state) => {
@@ -49,3 +52,11 @@ export const catalogSlice = createSlice({
         });
     }
 })
+
+export const {
+    selectById: selectProductById,
+    selectIds: selectProductsIds,
+    selectEntities: selectProductEntities,
+    selectAll: selectAllProducts,
+    selectTotal: selectTotalProducts
+} = productsAdapter.getSelectors((state: RootState) => state.catalog);

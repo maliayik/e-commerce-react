@@ -10,9 +10,7 @@ import {
     Typography
 } from "@mui/material";
 import {useParams} from "react-router";
-import {useEffect, useState} from "react";
-import {IProduct} from "../../../model/IProduct.ts";
-import requests from "../../api/requests.ts";
+import {useEffect} from "react";
 import NotFound from "../../errors/NotFound.tsx";
 import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
@@ -20,23 +18,22 @@ import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
 import {currencyTry} from "../../utils/formatCurrency.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
 import {addItemToCart} from "../cart/cartSlice.ts";
+import {fetchProductById, selectProductById} from "./catalogSlice.ts";
 
 export default function ProductDetailsPage() {
     const {cart, status} = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
     const {id} = useParams<{ id: string }>();
-    const [product, setProduct] = useState<IProduct | null>(null);
-    const [loading, setLoading] = useState(true);
+    const product = useAppSelector(state => selectProductById(state, Number(id)));
+    const {status: loading} = useAppSelector(state => state.catalog);
 
     const item = cart?.cartItems.find(i => i.productId == product?.id);
     useEffect(() => {
-        id && requests.Catalog.details(parseInt(id))
-            .then(data => setProduct(data))
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
+        if (!product && id)
+            dispatch(fetchProductById(parseInt(id)))
     }, [id]);
 
-    if (loading) return <CircularProgress/>
+    if (loading === "pendingFetchProductById") return <CircularProgress/>
     if (!product) return <NotFound></NotFound>
 
 
