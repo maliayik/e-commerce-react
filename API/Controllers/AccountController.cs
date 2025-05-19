@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entity;
+using API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AccountController(UserManager<AppUser> userManager) : ControllerBase
+public class AccountController(UserManager<AppUser> userManager, TokenService tokenService) : ControllerBase
 {
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDTO model)
@@ -23,7 +24,7 @@ public class AccountController(UserManager<AppUser> userManager) : ControllerBas
 
         if (result)
         {
-            return Ok(new { token = "token" });
+            return Ok(new { token = await tokenService.GenerateToken(user) });
         }
 
         return Unauthorized();
