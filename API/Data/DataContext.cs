@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
-public class DataContext(DbContextOptions options) : IdentityDbContext<IdentityUser, AppRole, string>(options)
+public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser, AppRole, string>(options)
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Cart> Carts => Set<Cart>();
