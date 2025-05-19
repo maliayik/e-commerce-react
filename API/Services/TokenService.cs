@@ -32,7 +32,9 @@ public class TokenService(UserManager<AppUser> userManager, IConfiguration confi
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(30),
-            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature),
+            Issuer = "mehmetayik.com",
+            Audience = "abc"
         };
 
         var token = tokenHandler.CreateToken(tokenSettings);

@@ -1,6 +1,7 @@
 using API.Data;
 using API.DTOs;
 using API.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace API.Controllers;
 [Route("/api/[controller]")]
 public class CartController(DataContext context) : ControllerBase
 {
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<CartDto>> GetCart()
     {
