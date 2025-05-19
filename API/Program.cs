@@ -1,4 +1,5 @@
 using API.Data;
+using API.Entity;
 using API.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<DataContext>();
 
 
 var app = builder.Build();
