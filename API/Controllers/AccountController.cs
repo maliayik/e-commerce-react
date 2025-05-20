@@ -17,7 +17,7 @@ public class AccountController(UserManager<AppUser> userManager, TokenService to
 
         if (user == null)
         {
-            return BadRequest("Invalid username or password");
+            return BadRequest(new ProblemDetails { Title = "username or password is incorrect" });
         }
 
         var result = await userManager.CheckPasswordAsync(user, model.Password);
