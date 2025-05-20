@@ -6,14 +6,25 @@ import {useEffect, useState} from "react";
 import requests from "../api/requests.ts";
 import {useAppDispatch} from "../hooks/hooks.ts";
 import { setCart } from "../pages/cart/cartSlice.ts";
+import {setUser} from "../pages/account/AccountSlice.ts";
 
 function App() {
 
     const dispatch=useAppDispatch();
     const [loading, setLoading] = useState(true);
     
-    //Bir önceki cart bilgilerini almak için App.tsx dosyamıza useEffect ekliyoruz.
+    //Bir önceki cart ve user bilgilerini almak için App.tsx dosyamıza useEffect ekliyoruz.
     useEffect(() => {
+        
+        dispatch(setUser(JSON.parse(localStorage.getItem("user")!)));
+        
+        requests.Account.getUser()
+            .then(user=> {
+                setUser(user);
+                localStorage.setItem("user", user);
+            })
+            .catch(error => console.log(error));
+        
         requests.Cart.get()
             .then(cart => dispatch(setCart(cart)))
             .catch(error => console.log(error))
