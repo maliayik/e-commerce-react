@@ -1,9 +1,24 @@
 import {Avatar, Box, Button, Container, Paper, TextField, Typography} from "@mui/material";
 import {LockOutlined} from "@mui/icons-material";
+import {useState} from "react";
+import requests from "../../api/requests.ts";
 
 export default function LoginPage() {
-    function handleSubmit() {
 
+    const [values, setValues] = useState({
+        username: "",
+        password: ""
+    });
+
+    function handleSubmit(e: any) {
+        e.preventDefault();
+        console.log(values);
+        requests.Account.login(values);
+    }
+
+    function handleInputChange(e: any) {
+        const {name, value} = e.target;
+        setValues({...values, [name]: value});
     }
 
     return (
@@ -14,10 +29,24 @@ export default function LoginPage() {
                 </Avatar>
                 <Typography component={"h1"} variant={"h5"} sx={{textAlign: "center"}}>Login</Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 2}}>
-                    <TextField label={"Enter username"} fullWidth required autoFocus sx={{mb: 2}}
-                               size={"small"}></TextField>
-                    <TextField label={"Enter password"} type={"password"} fullWidth required sx={{mb: 2}}
-                               size={"small"}></TextField>
+                    <TextField
+                        name={"username"}
+                        value={values.username}
+                        onChange={handleInputChange}
+                        label={"Enter username"}
+                        fullWidth required autoFocus
+                        sx={{mb: 2}}
+                        size={"small"}> </TextField>
+                    <TextField
+                        name={"password"}
+                        value={values.password}
+                        onChange={handleInputChange}
+                        label={"Enter password"}
+                        type={"password"}
+                        fullWidth required
+                        sx={{mb: 2}}
+                        size={"small"}> </TextField>
+
                     <Button type={"submit"} variant={"contained"} fullWidth sx={{mt: 1}}>Login</Button>
 
                 </Box>
