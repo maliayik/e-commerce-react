@@ -11,7 +11,7 @@ namespace API.Controllers;
 public class AccountController(UserManager<AppUser> userManager, TokenService tokenService) : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginDTO model)
+    public async Task<ActionResult<UserDTO>> Login(LoginDTO model)
     {
         var user = await userManager.FindByNameAsync(model.UserName);
 
@@ -24,7 +24,11 @@ public class AccountController(UserManager<AppUser> userManager, TokenService to
 
         if (result)
         {
-            return Ok(new { token = await tokenService.GenerateToken(user) });
+            return Ok(new UserDTO
+            {
+                Name = user.UserName!,
+                Token = await tokenService.GenerateToken(user)
+            });
         }
 
         return Unauthorized();

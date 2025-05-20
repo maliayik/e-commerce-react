@@ -2,12 +2,14 @@ import {configureStore} from "@reduxjs/toolkit";
 import {counterSlice} from "../pages/counter/counterSlice.ts";
 import {cartSlice} from "../pages/cart/cartSlice.ts";
 import {catalogSlice} from "../pages/catalog/catalogSlice.ts";
+import {accountSlice} from "../pages/account/AccountSlice.ts";
 
 export const store = configureStore({
     reducer: {
         counter: counterSlice.reducer,
         cart: cartSlice.reducer,
-        catalog: catalogSlice.reducer
+        catalog: catalogSlice.reducer,
+        account: accountSlice.reducer,
     }
 });
 
