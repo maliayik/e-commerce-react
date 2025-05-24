@@ -1,7 +1,8 @@
 import TableRow from "@mui/material/TableRow";
 import {TableCell} from "@mui/material";
 import {currencyTry} from "../../utils/formatCurrency.ts";
-import {useAppSelector} from "../../hooks/hooks.ts";
+import {useAppSelector} from "../../store/store.ts";
+
 
 export default function CartSummary() {
     const {cart} = useAppSelector(state => state.cart);

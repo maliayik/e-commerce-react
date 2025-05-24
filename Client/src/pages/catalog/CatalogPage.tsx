@@ -1,8 +1,8 @@
 import {useEffect} from "react";
 import ProductList from "./ProductList.tsx";
 import {CircularProgress} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
 import {fetchProducts, selectAllProducts} from "./catalogSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../store/store.ts";
 
 
 export default function CatalogPage() {

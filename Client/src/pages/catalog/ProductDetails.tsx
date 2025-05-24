@@ -16,9 +16,10 @@ import {LoadingButton} from "@mui/lab";
 import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
 
 import {currencyTry} from "../../utils/formatCurrency.ts";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
+
 import {addItemToCart} from "../cart/cartSlice.ts";
 import {fetchProductById, selectProductById} from "./catalogSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
 
 export default function ProductDetailsPage() {
     const {cart, status} = useAppSelector(state => state.cart);

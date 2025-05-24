@@ -3,6 +3,7 @@ import {counterSlice} from "../pages/counter/counterSlice.ts";
 import {cartSlice} from "../pages/cart/cartSlice.ts";
 import {catalogSlice} from "../pages/catalog/catalogSlice.ts";
 import {accountSlice} from "../pages/account/AccountSlice.ts";
+import {useDispatch, useSelector} from "react-redux";
 
 export const store = configureStore({
     reducer: {
@@ -16,3 +17,6 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export  const useAppDispatch =  useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();

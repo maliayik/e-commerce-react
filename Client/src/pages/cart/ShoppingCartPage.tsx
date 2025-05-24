@@ -9,8 +9,8 @@ import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 import {toast} from "react-toastify";
 import CartSummary from "./CartSummary.tsx";
 import {currencyTry} from "../../utils/formatCurrency.ts";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
 import {addItemToCart, deleteItemFromCart} from "./cartSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
 
 export default function ShoppingCartPage() {
 

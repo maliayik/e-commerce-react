@@ -2,36 +2,24 @@ import {CircularProgress, Container, CssBaseline} from "@mui/material";
 import {Outlet} from "react-router";
 import {ToastContainer} from "react-toastify";
 import {useEffect, useState} from "react";
-import requests from "../api/requests.ts";
-import {useAppDispatch} from "../hooks/hooks.ts";
-import {setCart} from "../pages/cart/cartSlice.ts";
-import {logout, setUser} from "../pages/account/AccountSlice.ts";
+import {useAppDispatch} from "../store/store.ts";
+import {getCart} from "../pages/cart/cartSlice.ts";
 import Header from "./Header.tsx";
+import {getUser} from "../pages/account/AccountSlice.ts";
+
 
 function App() {
 
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
 
-    //Bir önceki cart ve user bilgilerini almak için App.tsx dosyamıza useEffect ekliyoruz.
-    useEffect(() => {        
-        dispatch(setUser(JSON.parse(localStorage.getItem("user")!)));
-        // 
-        requests.Account.getUser()
-            .then(user => {
-                setUser(user);
-                localStorage.setItem("user", JSON.stringify(user));
-            })
-            .catch(error => {
-                console.log(error);
-                dispatch(logout());
-            });
+    const initApp = async () => {
+        await dispatch(getCart());
+        await dispatch(getUser());      
+    }
 
-        requests.Cart.get()
-            .then(cart => dispatch(setCart(cart)))
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
-
+    useEffect(() => {
+        initApp().then(() => setLoading(false));
     }, []);
 
     if (loading) return <CircularProgress/>;

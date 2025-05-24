@@ -2,9 +2,9 @@ import {Avatar, Box, Container, Paper, TextField, Typography} from "@mui/materia
 import {LockOutlined} from "@mui/icons-material";
 import {FieldValues, useForm} from "react-hook-form";
 import {LoadingButton} from "@mui/lab";
-import {useAppDispatch} from "../../hooks/hooks.ts";
 import {loginUser} from "./AccountSlice.ts";
 import {useNavigate} from "react-router";
+import {useAppDispatch} from "../../store/store.ts";
 
 export default function LoginPage() {
 
