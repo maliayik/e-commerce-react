@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using API.Data;
 using API.Entity;
@@ -27,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost3000", policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins("http://localhost:3001")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -43,8 +44,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -53,15 +54,15 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer(x =>
 {
     x.RequireHttpsMetadata = false;
-    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
         ValidIssuer = "mehmetayik.com",
         ValidateAudience = false,
         ValidAudience = "abc",
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWTSecurity:SecretKey"]!)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+            builder.Configuration["JWTSecurity:SecretKey"]!)),
         ValidateLifetime = true
     };
 });

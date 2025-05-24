@@ -27,7 +27,7 @@ public class AccountController(UserManager<AppUser> userManager, TokenService to
         {
             return Ok(new UserDTO
             {
-                Name = user.UserName!,
+                Name = user.Name!,
                 Token = await tokenService.GenerateToken(user)
             });
         }
@@ -74,7 +74,7 @@ public class AccountController(UserManager<AppUser> userManager, TokenService to
 
         return new UserDTO
         {
-            Name = user.UserName!,
+            Name = user.Name!,
             Token = await tokenService.GenerateToken(user)
         };
     }

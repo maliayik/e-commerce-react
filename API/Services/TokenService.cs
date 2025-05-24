@@ -15,7 +15,7 @@ public class TokenService(UserManager<AppUser> userManager, IConfiguration confi
         {
             new Claim(ClaimTypes.Email, user.Email!),
             new Claim(ClaimTypes.NameIdentifier, user.Id!),
-            new Claim(ClaimTypes.Name, user.Name!),
+            new Claim(ClaimTypes.Name, user.UserName!)
         };
 
         var roles = await userManager.GetRolesAsync(user);
