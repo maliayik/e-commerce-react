@@ -1,3 +1,4 @@
+using API.Data;
 using API.DTOs;
 using API.Entity;
 using API.Services;
@@ -9,7 +10,11 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AccountController(UserManager<AppUser> userManager, TokenService tokenService) : ControllerBase
+public class AccountController(
+    UserManager<AppUser> userManager,
+    TokenService tokenService,
+    CartService cartService,
+    DataContext context) : ControllerBase
 {
     [HttpPost("login")]
     public async Task<ActionResult<UserDTO>> Login(LoginDTO model)
@@ -25,6 +30,22 @@ public class AccountController(UserManager<AppUser> userManager, TokenService to
 
         if (result)
         {
+            var userCart = await cartService.GetOrCreate(model.UserName);
+            var cookieCart = await cartService.GetOrCreate(Request.Cookies["customerId"]!);
+
+            if (userCart is not null)
+            {
+                foreach (var items in userCart.CartItems)
+                {
+                    cookieCart.AddItem(items.Product, items.Quantity);
+                }
+
+                context.Carts.Remove(userCart);
+            }
+
+            cookieCart.CustomerId = model.UserName;
+            await context.SaveChangesAsync();
+
             return Ok(new UserDTO
             {
                 Name = user.Name!,

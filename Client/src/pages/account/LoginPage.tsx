@@ -5,6 +5,7 @@ import {LoadingButton} from "@mui/lab";
 import {loginUser} from "./AccountSlice.ts";
 import {useNavigate} from "react-router";
 import {useAppDispatch} from "../../store/store.ts";
+import {getCart} from "../cart/cartSlice.ts";
 
 export default function LoginPage() {
 
@@ -20,6 +21,7 @@ export default function LoginPage() {
 
     async function submitForm(data: FieldValues) {
         await dispatch(loginUser(data));
+        await dispatch(getCart());
         navigate("/catalog");
     }
 

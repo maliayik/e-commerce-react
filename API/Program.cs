@@ -15,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<CartService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -77,10 +79,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapScalarApiReference(options =>
-    {
-        options.OpenApiRoutePattern = "/swagger/v1/swagger.json";
-    });
+    app.MapScalarApiReference(options => { options.OpenApiRoutePattern = "/swagger/v1/swagger.json"; });
 }
 
 app.UseHttpsRedirection();

@@ -13,9 +13,9 @@ function App() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
 
-    const initApp = async () => {
-        await dispatch(getCart());
+    const initApp = async () => {        
         await dispatch(getUser());
+        await dispatch(getCart());
     }
 
     useEffect(() => {

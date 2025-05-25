@@ -1,6 +1,7 @@
 using API.Data;
 using API.DTOs;
 using API.Entity;
+using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,19 +10,18 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class CartController(DataContext context) : ControllerBase
+public class CartController(DataContext context,CartService cartService) : ControllerBase
 {
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<CartDto>> GetCart()
     {
-        return CartToDto(await GetOrCreate());
+        return CartToDto(await cartService.GetOrCreate(GetCustomerId()));
     }
 
     [HttpPost]
     public async Task<ActionResult> AddItemToCart(int productId, int quantity)
     {
-        var cart = await GetOrCreate();
+        var cart = await cartService.GetOrCreate(GetCustomerId());
 
 
         var product = await context.Products.FirstOrDefaultAsync(i => i.Id == productId);
@@ -43,7 +43,7 @@ public class CartController(DataContext context) : ControllerBase
     [HttpDelete]
     public async Task<ActionResult> DeleteItemFromCart(int productId, int quantity)
     {
-        var cart = await GetOrCreate();
+        var cart = await cartService.GetOrCreate(GetCustomerId());
 
         cart.RemoveItem(productId, quantity);
 
@@ -53,28 +53,15 @@ public class CartController(DataContext context) : ControllerBase
         return BadRequest(new ProblemDetails { Title = "The Product can not be deleted from cart" });
     }
 
-
-    private async Task<Cart> GetOrCreate()
+    /// <summary>
+    /// Kart bilgilerini almak için Token içerisindeki username kullan yoksada cookie üzerindeki customerId kullan
+    /// </summary>
+    private string GetCustomerId()
     {
-        var cart = await context.Carts.Include(i => i.CartItems).ThenInclude(i => i.Product)
-            .Where(i => i.CustomerId == Request.Cookies["customerId"]).FirstOrDefaultAsync();
-        if (cart is null)
-        {
-            var customerId = Guid.NewGuid().ToString();
-
-            var cookieOptions = new CookieOptions
-            {
-                Expires = DateTime.Now.AddMonths(1),
-                IsEssential = true
-            };
-            Response.Cookies.Append("customerId", customerId, cookieOptions);
-            cart = new Cart { CustomerId = customerId };
-            context.Carts.Add(cart);
-            await context.SaveChangesAsync();
-        }
-
-        return cart;
+        return User.Identity?.Name ?? Request.Cookies["customerId"]!;
     }
+
+   
 
     private CartDto CartToDto(Cart cart)
     {
